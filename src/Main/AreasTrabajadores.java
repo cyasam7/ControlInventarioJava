@@ -6,26 +6,23 @@
 package Main;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+
 import Conexion.Conexion;
 import java.sql.Connection;
-/**
- *
- * @author Alexander
- */
-public class Areas extends javax.swing.JFrame {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+public class AreasTrabajadores extends javax.swing.JFrame {
 
     Conexion conexion = new Conexion();
     Connection con = conexion.getConnection();
-    public Areas() {
+    public AreasTrabajadores() {
         initComponents();
-        CargarTabla();
-        this.setTitle("Areas");
+        this.setTitle("Areas para trabajadores");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
+        cargarTabla();
     }
 
     /**
@@ -39,17 +36,19 @@ public class Areas extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaAreas = new javax.swing.JTable();
+        tablaArea = new javax.swing.JTable();
         txtArea = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cbxPiso = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 135, 158));
 
-        tablaAreas.setModel(new javax.swing.table.DefaultTableModel(
+        tablaArea.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -60,7 +59,12 @@ public class Areas extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tablaAreas);
+        tablaArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAreaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaArea);
 
         jButton1.setText("Agregar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -78,7 +82,13 @@ public class Areas extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Area:");
+        jLabel1.setText("Edificio:");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Piso:");
+
+        cbxPiso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Selecciona-", "1", "2", "3", "4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,16 +97,19 @@ public class Areas extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 154, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtArea)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxPiso, 0, 173, Short.MAX_VALUE)
+                            .addComponent(txtArea))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -107,12 +120,14 @@ public class Areas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtArea, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(0, 13, Short.MAX_VALUE))
+                    .addComponent(jButton2)
+                    .addComponent(jLabel2)
+                    .addComponent(cbxPiso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -130,39 +145,50 @@ public class Areas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-          try {
-            PreparedStatement ps = con.prepareStatement("insert into domAreas (Area) values(?)");
-            ps.setString(1, txtArea.getText());
+        String valor = txtArea.getText();
+        if (cbxPiso.getSelectedIndex() != 0) {
+            valor+=" piso "+cbxPiso.getSelectedItem().toString();
+        }
+        try {
+            PreparedStatement ps = con.prepareStatement("insert into domAreatrabajadores (Area) values(?)");
+            ps.setString(1, valor);
             int aviso = ps.executeUpdate();
             if (aviso > 0) {
                 JOptionPane.showMessageDialog(null, "Se agrego correctamente");
                 ps.close();
                 txtArea.setText("");
-                CargarTabla();
+                cbxPiso.setSelectedIndex(0);
+                cargarTabla();
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            if (e.getMessage().contains("Duplicate entry")) {
+                JOptionPane.showMessageDialog(this, "Ya existe el area");
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String valor = String.valueOf(JOptionPane.showInputDialog("Colca el nombre exacto del area que desea eliminar"));
+        String valor = String.valueOf(JOptionPane.showInputDialog("Nombre exacto del area que desea eliminar"));
         try {
-            PreparedStatement ps = con.prepareStatement("delete from domAreas where area=?");
+            PreparedStatement ps = con.prepareStatement("delete from domAreatrabajadores where area=?");
             ps.setString(1, valor);
             int aviso = ps.executeUpdate();
             if (aviso > 0) {
-                JOptionPane.showMessageDialog(this, "Se elimino correctamente");
+                JOptionPane.showMessageDialog(null, "Se elimino correctamente");
                 ps.close();
                 txtArea.setText("");
-                CargarTabla();
+                cargarTabla();
             }else{
-                JOptionPane.showMessageDialog(this, "No existe el area");
+                JOptionPane.showMessageDialog(this, "No existe el area que desea eliminar");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tablaAreaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAreaMouseClicked
+        
+    }//GEN-LAST:event_tablaAreaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -181,47 +207,52 @@ public class Areas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Areas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AreasTrabajadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Areas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AreasTrabajadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Areas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AreasTrabajadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Areas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AreasTrabajadores.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Areas().setVisible(true);
+                new AreasTrabajadores().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbxPiso;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablaAreas;
+    private javax.swing.JTable tablaArea;
     private javax.swing.JTextField txtArea;
     // End of variables declaration//GEN-END:variables
-public void CargarTabla(){
-     DefaultTableModel dtm = new DefaultTableModel();
-        dtm.addColumn("Sucursal");
-        try {
-            PreparedStatement ps = con.prepareStatement("select * from Domareas");
-            ResultSet rs = ps.executeQuery();
-            Object row[] = new Object[1];
-            while (rs.next()) {
-                row[0] = rs.getString("Area");
-                dtm.addRow(row);
-            }
-            tablaAreas.setModel(dtm);
-            ps.close();
-        } catch (Exception e) {
+public void cargarTabla(){
+    String titulos[]={
+        "Area"
+    };
+    DefaultTableModel dtm = new DefaultTableModel(titulos, 0);
+    try {
+        PreparedStatement ps = con.prepareStatement("select * from domareatrabajadores");
+        ResultSet rs = ps.executeQuery();
+        Object row[]= new Object[1];
+        while(rs.next()){
+            row[0]=rs.getString("area");
+            dtm.addRow(row);
         }
+        tablaArea.setModel(dtm);
+        ps.close();
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, e.toString());
     }
+}
 }

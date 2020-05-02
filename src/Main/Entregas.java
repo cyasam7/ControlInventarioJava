@@ -25,13 +25,20 @@ public class Entregas extends javax.swing.JFrame {
     Conexion conexion = new Conexion();
     Connection con = conexion.getConnection();
     int cantidadTrabajador;
-
+    String folio="";
+    String codigo="";
+    String cantidad="";
+    
+    String folioP="";
+    String codigoP="";
+    String cantidadP="";
     public Entregas() {
         initComponents();
         this.setTitle("Entregas");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         cargarTablaTrabajadores();
+        cargarTablaPersonas();
     }
 
     /**
@@ -48,8 +55,6 @@ public class Entregas extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaTrabajadores = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        txtFolioTrabajador = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaAlumnos = new javax.swing.JTable();
@@ -84,8 +89,6 @@ public class Entregas extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tablaTrabajadores);
 
-        jLabel1.setText("Folio seleccionado:");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -94,10 +97,7 @@ public class Entregas extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFolioTrabajador, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE))
                 .addContainerGap())
@@ -105,13 +105,10 @@ public class Entregas extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(33, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1)
-                    .addComponent(txtFolioTrabajador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButton1)
                 .addContainerGap())
         );
 
@@ -171,7 +168,7 @@ public class Entregas extends javax.swing.JFrame {
                     .addContainerGap(39, Short.MAX_VALUE)))
         );
 
-        jTabbedPane1.addTab("Alumnos", jPanel2);
+        jTabbedPane1.addTab("Personas", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -188,21 +185,72 @@ public class Entregas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         
+        if(codigo.equals("") || folio.equals("") || cantidad.equals("")){
+            JOptionPane.showMessageDialog(this, "Seleccionar alguna fila en la tabla");
+            return;
+        }
         try {
-            recibir(folio, codigo, cantidad, tabla);
-        } catch (Exception e) {
+            recibir(folio, codigo, cantidad, "historialtrabajadores");
+            JOptionPane.showMessageDialog(this, "Se recivio el producto");
+            cargarTablaTrabajadores();
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }finally{
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Entregas.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        if(codigoP.equals("") || folioP.equals("") || cantidadP.equals("")){
+            JOptionPane.showMessageDialog(this, "Seleccionar alguna fila en la tabla");
+            return;
+        }
+        try {
+            recibir(folioP, codigoP, cantidadP, "historialpersonas");
+            JOptionPane.showMessageDialog(this, "Se recivio el producto");
+            cargarTablaTrabajadores();
+            limpiarVariables();
+        } catch (SQLException e) {
+            System.out.println(e);
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }catch(Exception e){
+            
+        } finally{
+            try {
+                con.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Entregas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
         int seleccion = tablaAlumnos.rowAtPoint(evt.getPoint());
-        String folio = (String.valueOf(tablaTrabajadores.getValueAt(seleccion, 6)));
+        String nom = String.valueOf(tablaAlumnos.getValueAt(seleccion, 0));
+        String apellido =String.valueOf(tablaAlumnos.getValueAt(seleccion, 1));
+        String folio = String.valueOf(tablaAlumnos.getValueAt(seleccion, 8));
+        String codigo = String.valueOf(tablaAlumnos.getValueAt(seleccion, 4));
+        String cantidad = String.valueOf(tablaAlumnos.getValueAt(seleccion, 5));
+        
+        this.codigoP=codigo;
+        this.cantidadP=cantidad;
+        this.folioP= folio;
+        String oracion = "Seleccionaste a " + nom + " " + apellido + " con folio "+folio;
+        JOptionPane.showMessageDialog(this, oracion);
 
 
     }//GEN-LAST:event_tablaAlumnosMouseClicked
@@ -212,6 +260,12 @@ public class Entregas extends javax.swing.JFrame {
         String nom = String.valueOf(tablaTrabajadores.getValueAt(seleccion, 0));
         String apellido =String.valueOf(tablaTrabajadores.getValueAt(seleccion, 1));
         String folio = String.valueOf(tablaTrabajadores.getValueAt(seleccion, 6));
+        String codigo = String.valueOf(tablaTrabajadores.getValueAt(seleccion, 9));
+        String cantidad = String.valueOf(tablaTrabajadores.getValueAt(seleccion, 8));
+        
+        this.codigo=codigo;
+        this.cantidad=cantidad;
+        this.folio= folio;
         String oracion = "Seleccionaste a " + nom + " " + apellido + " con folio "+folio;
         JOptionPane.showMessageDialog(this, oracion);
     }//GEN-LAST:event_tablaTrabajadoresMouseClicked
@@ -254,7 +308,6 @@ public class Entregas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
@@ -262,7 +315,6 @@ public class Entregas extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tablaAlumnos;
     private javax.swing.JTable tablaTrabajadores;
-    private javax.swing.JTextField txtFolioTrabajador;
     // End of variables declaration//GEN-END:variables
 public void cargarTablaTrabajadores() {
         String titulos[] = {
@@ -294,19 +346,70 @@ public void cargarTablaTrabajadores() {
         }
     }
 
-    public void recibir(String folio,String codigo,String cantidad ,String tabla) throws SQLException {
+    public void cargarTablaPersonas() {
+        String titulos[] = {
+            "Nombre", "Apellido", "Descripcion", "Producto", "CodigoProducto", "Cantidad", "Fecha", "Entrego", "Folio"
+        };
+        DefaultTableModel dtm = new DefaultTableModel(titulos, 0);
 
+        try {
+            PreparedStatement ps = con.prepareStatement("select * from vhistorialpersonas where entrego=?");
+            ps.setString(1, "No entrego");
+            ResultSet rs = ps.executeQuery();
+            Object row[] = new Object[10];
+            while (rs.next()) {
+                row[0] = rs.getString("nombre");
+                row[1] = rs.getString("apellido");
+                row[2] = rs.getString("descripcion");
+                row[3] = rs.getString("producto");
+                row[4] = rs.getString("codigoproducto");
+                row[5] = rs.getString("cantidad");
+                row[6] = rs.getString("fecha");
+                row[7] = rs.getString("entrego");
+                row[8] = rs.getString("folio");
+                dtm.addRow(row);
+            }
+            tablaAlumnos.setModel(dtm);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
+
+    public void recibir(String folio,String codigo,String cantidad ,String tabla) throws SQLException {
+        System.out.println(cantidad);
+        System.out.println(folio);
+        System.out.println(codigo);
+        
         con.setAutoCommit(false);
         PreparedStatement ps = con.prepareStatement("UPDATE "+tabla+" SET "
-                + "``entregado` = ? WHERE (folio = ?)");
+                + "entrego=? WHERE folio=?");
         ps.setString(1, "Se entrego");
         ps.setString(2, folio);
+        ps.executeUpdate();
+        ps.close();
+        
+//        PreparedStatement dato = con.prepareStatement("select * from productos where codigo=?");
+//        dato.setString(1, codigo);
+//        ResultSet rs = dato.executeQuery();
+//        int pCantidad = rs.getInt("cantidad");  
+//        int nuevaCantidad =  pCantidad+Integer.parseInt(cantidad);
+//        dato.close();
         
         PreparedStatement ps2 = con.prepareStatement("UPDATE `inventario`.`productos` "
-                + "SET `Cantidad` = `Cantidad`+'?' "
-                + "WHERE (`Codigo` = ?);)");
+                + "SET Cantidad=Cantidad+?  "
+                + "WHERE Codigo =?");
         ps2.setString(1, cantidad);
         ps2.setString(2, codigo);
+        ps2.executeUpdate();
+        ps2.close();
         con.commit();
+    }
+    public void limpiarVariables(){
+        this.codigoP="";
+        this.cantidadP="";
+        this.folioP="";
+        this.codigo="";
+        this.cantidad="";
+        this.folio="";
     }
 }

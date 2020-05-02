@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3308
--- Tiempo de generación: 02-05-2020 a las 03:57:37
+-- Tiempo de generación: 02-05-2020 a las 20:40:39
 -- Versión del servidor: 8.0.18
 -- Versión de PHP: 7.3.12
 
@@ -31,7 +31,8 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `domareas`;
 CREATE TABLE IF NOT EXISTS `domareas` (
   `Area` varchar(45) NOT NULL,
-  PRIMARY KEY (`Area`)
+  PRIMARY KEY (`Area`),
+  UNIQUE KEY `Area_UNIQUE` (`Area`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -39,9 +40,27 @@ CREATE TABLE IF NOT EXISTS `domareas` (
 --
 
 INSERT INTO `domareas` (`Area`) VALUES
-('Area'),
-('dasdas'),
-('Limpieza');
+('Liquida');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `domareatrabajadores`
+--
+
+DROP TABLE IF EXISTS `domareatrabajadores`;
+CREATE TABLE IF NOT EXISTS `domareatrabajadores` (
+  `Area` varchar(45) NOT NULL,
+  PRIMARY KEY (`Area`),
+  UNIQUE KEY `area_UNIQUE` (`Area`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `domareatrabajadores`
+--
+
+INSERT INTO `domareatrabajadores` (`Area`) VALUES
+('Alexander piso1');
 
 -- --------------------------------------------------------
 
@@ -84,14 +103,6 @@ CREATE TABLE IF NOT EXISTS `historialpersonas` (
   KEY `HistorialPProducto_idx` (`CodigoProducto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Volcado de datos para la tabla `historialpersonas`
---
-
-INSERT INTO `historialpersonas` (`idHistorialPersona`, `Nombre`, `Apellido`, `Descripcion`, `CodigoProducto`, `CantidadProducto`, `Fecha`, `Entrego`, `Folio`) VALUES
-(1, 'Alexander ', 'Serrano', 'Alumno ', 'dsa', 2, '2016-11-16 12:43:20', 'No entrego', '1561515'),
-(4, 'Alexander', 'Serrano', 'dasdas', '0001', 1, '2020-05-01 19:27:47', 'No entrego', '78840650-20cc-4ae4-b411-6c8c86b071f1');
-
 -- --------------------------------------------------------
 
 --
@@ -101,7 +112,7 @@ INSERT INTO `historialpersonas` (`idHistorialPersona`, `Nombre`, `Apellido`, `De
 DROP TABLE IF EXISTS `historialtrabajadores`;
 CREATE TABLE IF NOT EXISTS `historialtrabajadores` (
   `idHistorial` int(11) NOT NULL AUTO_INCREMENT,
-  `CodigoProducto` varchar(45) NOT NULL,
+  `CodigoProducto` varchar(45) DEFAULT NULL,
   `CodigoTrabajador` varchar(45) NOT NULL,
   `Fecha` timestamp NOT NULL,
   `Entrego` varchar(45) NOT NULL DEFAULT 'No entrego',
@@ -110,16 +121,7 @@ CREATE TABLE IF NOT EXISTS `historialtrabajadores` (
   PRIMARY KEY (`idHistorial`),
   KEY `HistorialTProducto_idx` (`CodigoProducto`),
   KEY `HistorialTTrabajador_idx` (`CodigoTrabajador`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `historialtrabajadores`
---
-
-INSERT INTO `historialtrabajadores` (`idHistorial`, `CodigoProducto`, `CodigoTrabajador`, `Fecha`, `Entrego`, `Folio`, `CantidadProducto`) VALUES
-(3, 'dsa', '17041611', '2016-11-16 12:43:20', 'No entrego', '17041611', 2),
-(4, 'dsa', '17041611', '2016-11-16 12:43:20', 'No entrego', '17041612', 1),
-(7, 'dsa', '17041611', '2020-05-01 18:55:05', 'No entrego', '4eb98d6f-7b76-4738-8a60-3a1654613c25', 1);
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -134,19 +136,18 @@ CREATE TABLE IF NOT EXISTS `productos` (
   `Cantidad` int(11) NOT NULL,
   `Estado` varchar(45) NOT NULL,
   `Codigo` varchar(45) NOT NULL,
-  `Area` varchar(45) NOT NULL,
+  `Area` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idProducto`),
   UNIQUE KEY `Codigo_UNIQUE` (`Codigo`),
-  KEY `ProductoArea_idx` (`Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `domAreaProducto_idx` (`Area`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
 INSERT INTO `productos` (`idProducto`, `Nombre`, `Cantidad`, `Estado`, `Codigo`, `Area`) VALUES
-(4, 'sad', 1, 'das', 'dsa', 'Area'),
-(6, 'Jabon', 2, 'Nuevo', '0001', 'Limpieza');
+(8, 'Jobon', 4, 'Bien', '17000', 'Liquida');
 
 -- --------------------------------------------------------
 
@@ -159,21 +160,16 @@ CREATE TABLE IF NOT EXISTS `trabajadores` (
   `idTrabajador` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(45) NOT NULL,
   `Apellido` varchar(45) NOT NULL,
-  `Area` varchar(45) NOT NULL,
+  `Area` varchar(45) DEFAULT NULL,
   `Turno` varchar(45) NOT NULL,
   `Codigo` varchar(45) NOT NULL,
   PRIMARY KEY (`idTrabajador`),
   UNIQUE KEY `Codigo_UNIQUE` (`Codigo`),
-  KEY `DomArea_idx` (`Area`),
-  KEY `DomTurno_idx` (`Turno`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Volcado de datos para la tabla `trabajadores`
---
-
-INSERT INTO `trabajadores` (`idTrabajador`, `Nombre`, `Apellido`, `Area`, `Turno`, `Codigo`) VALUES
-(3, 'Alexander', 'Serrano', 'Limpieza', 'Matutino', '17041611');
+  KEY `DomTurno_idx` (`Turno`),
+  KEY `DomAreaTrabajo_idx` (`Area`),
+  KEY `DomAreaTrabajador_idx` (`Area`),
+  KEY `AreaParaTrabajador_idx` (`Area`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -262,21 +258,21 @@ ALTER TABLE `historialpersonas`
 -- Filtros para la tabla `historialtrabajadores`
 --
 ALTER TABLE `historialtrabajadores`
-  ADD CONSTRAINT `HistorialTProducto` FOREIGN KEY (`CodigoProducto`) REFERENCES `productos` (`Codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `HistorialTProducto` FOREIGN KEY (`CodigoProducto`) REFERENCES `productos` (`Codigo`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `HistorialTTrabajador` FOREIGN KEY (`CodigoTrabajador`) REFERENCES `trabajadores` (`Codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `productos`
 --
 ALTER TABLE `productos`
-  ADD CONSTRAINT `ProductoArea` FOREIGN KEY (`Area`) REFERENCES `domareas` (`Area`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `domAreaProducto` FOREIGN KEY (`Area`) REFERENCES `domareas` (`Area`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Filtros para la tabla `trabajadores`
 --
 ALTER TABLE `trabajadores`
-  ADD CONSTRAINT `DomArea` FOREIGN KEY (`Area`) REFERENCES `domareas` (`Area`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `DomTurno` FOREIGN KEY (`Turno`) REFERENCES `domturno` (`Turno`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `domTrabjadorArea` FOREIGN KEY (`Area`) REFERENCES `domareatrabajadores` (`Area`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `domTurno` FOREIGN KEY (`Turno`) REFERENCES `domturno` (`Turno`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

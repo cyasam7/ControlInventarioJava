@@ -87,7 +87,7 @@ public class Historial extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -145,7 +145,7 @@ public class Historial extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -179,7 +179,7 @@ public class Historial extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1033, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,26 +245,25 @@ public class Historial extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 public void cargarTablaTrabajador(){
     String titulos[] = {
-      "Nombre","Apellido","Area","Turno","Fecha","Entrego","Folio","Producto","Cantidad","Codigo"  
+      "Nombre","Apellido","Area","Turno","Producto","Cantidad","Codigo","Folio","Entrego" ,"Fecha"
     };
     DefaultTableModel dtm = new DefaultTableModel(titulos,0);
     
     try {
-        PreparedStatement ps = con.prepareStatement("select * from vhistorialtrabajador where entrego=? ");
-        ps.setString(1, "Se entrego");
+        PreparedStatement ps = con.prepareStatement("select * from vhistorialtrabajador ");
         ResultSet rs = ps.executeQuery();
-        Object row[]= new Object[9];
+        Object row[]= new Object[10];
         while(rs.next()){
             row[0]=rs.getString("nombre");
             row[1]=rs.getString("apellido");
             row[2]=rs.getString("area");
             row[3]=rs.getString("turno");
-            row[4]=rs.getString("fecha");
-            row[5]=rs.getString("entrego");
-            row[6]=rs.getString("folio");
-            row[7]=rs.getString("Producto");
-            row[8]=rs.getString("Cantidad");
-            row[9]=rs.getString("Codigo");
+            row[4]=rs.getString("Producto");
+            row[5]=rs.getString("Cantidad");
+            row[6]=rs.getString("Codigo");
+            row[7]=rs.getString("folio");
+            row[8]=rs.getString("entrego");
+            row[9]=rs.getString("fecha");
             dtm.addRow(row);
         }
         tablaTrabajadores.setModel(dtm);
@@ -274,13 +273,12 @@ public void cargarTablaTrabajador(){
 }
 public void cargarTablaPersona(){
     String titulos[] = {
-      "Nombre","Apellido","Descripcion","Producto","Codigo","Cantidad","Fecha","Entrego","Folio"  
+      "Nombre","Apellido","Descripcion","Producto","Codigo","Cantidad","Folio","Entrego","Fecha"
     };
     DefaultTableModel dtm = new DefaultTableModel(titulos,0);
     
     try {
-        PreparedStatement ps = con.prepareStatement("select * from vhistorialtrabajador where entrego=? ");
-        ps.setString(1, "Se entrego");
+        PreparedStatement ps = con.prepareStatement("select * from vhistorialpersonas");
         ResultSet rs = ps.executeQuery();
         Object row[]= new Object[9];
         while(rs.next()){
@@ -290,9 +288,9 @@ public void cargarTablaPersona(){
             row[3]=rs.getString("producto");
             row[4]=rs.getString("CodigoProducto");
             row[5]=rs.getString("cantidad");
-            row[6]=rs.getString("fecha");
+            row[6]=rs.getString("folio");
             row[7]=rs.getString("entrego");
-            row[8]=rs.getString("folio");
+            row[8]=rs.getString("fecha");
             dtm.addRow(row);
         }
         tablaPersonas.setModel(dtm);

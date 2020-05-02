@@ -313,7 +313,6 @@ public class Prestar extends javax.swing.JFrame {
         String cantidad = txtCantidadTrabajador.getText();
         try {
             iniciarTransaccion(codigoProducto, codigoTrabajador, fecha, folio, cantidad);
-            JOptionPane.showMessageDialog(this, "Prestamo exitoso");
         } catch (SQLException e) {
             if (e.getMessage().contains("a foreign key constraint fails")) {
                 JOptionPane.showMessageDialog(this, "No existe el trabajador");
@@ -499,7 +498,7 @@ public void iniciarTransaccion(String CodigoProducto, String CodigoTrabajador, S
             ps2.executeUpdate();
             ps2.close();
             con.commit();
-
+            JOptionPane.showMessageDialog(this, "Prestamo exitoso");
         }
 
     }
@@ -541,7 +540,7 @@ public void iniciarTransaccion(String CodigoProducto, String CodigoTrabajador, S
             String fecha,String folio) throws SQLException, Exception{
         if (Integer.parseInt(cantidad) > cantidadProductoPersonas) {
             JOptionPane.showMessageDialog(this, "Exedio el limite de productos");
-            return;
+
         } else {
             con.setAutoCommit(false);
             PreparedStatement ps = con.prepareStatement("INSERT INTO `inventario`.`historialpersonas` "

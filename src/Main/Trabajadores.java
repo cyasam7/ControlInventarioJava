@@ -26,11 +26,11 @@ public class Trabajadores extends javax.swing.JFrame {
 
     public Trabajadores() {
         initComponents();
-        this.setTitle("Productos");
+        this.setTitle("Trabajadores");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         CargarTabla();
-        cargarCombo(cbxArea, "domAreas", "area");
+        cargarCombo(cbxArea, "domAreatrabajadores", "area");
         cargarCombo(cbxTurno, "domturno", "Turno");
     }
 
@@ -57,12 +57,10 @@ public class Trabajadores extends javax.swing.JFrame {
         cbxTurno = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -114,13 +112,6 @@ public class Trabajadores extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Codigo:");
 
-        jButton5.setText("Generar");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -143,12 +134,9 @@ public class Trabajadores extends javax.swing.JFrame {
                             .addComponent(cbxArea, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -163,8 +151,7 @@ public class Trabajadores extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5))
+                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -200,8 +187,6 @@ public class Trabajadores extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Buscar");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -211,8 +196,7 @@ public class Trabajadores extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -224,9 +208,7 @@ public class Trabajadores extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addGap(13, 13, 13)
                 .addComponent(jButton3)
-                .addGap(11, 11, 11)
-                .addComponent(jButton4)
-                .addContainerGap())
+                .addGap(45, 45, 45))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -291,10 +273,6 @@ public class Trabajadores extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
             PreparedStatement ps = con.prepareStatement("delete from  trabajadores where codigo=?");
@@ -313,20 +291,22 @@ public class Trabajadores extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            PreparedStatement ps = con.prepareStatement("UPDATE `inventario`.`trabajadores` SET "
-                    + "`Nombre` = ? ,`Apellido` = ? ,`Area` = ? ,`Turno` = ? ,`Codigo` = ? WHERE (codigo = ?)");
+            PreparedStatement ps = con.prepareStatement("UPDATE `inventario`.`trabajadores` "
+                    + "SET Nombre=?,Apellido=?, Area=?,Turno=? "
+                    + "WHERE (codigo=?)");
             ps.setString(1, txtNombre.getText());
             ps.setString(2, txtApellido.getText());
             ps.setString(3, cbxArea.getSelectedItem().toString());
-            ps.setString(5, cbxTurno.getSelectedItem().toString());
-            ps.setString(4, txtCodigo.getText());
-            ps.setString(6, txtCodigo.getText());
+            ps.setString(4, cbxTurno.getSelectedItem().toString());
+            ps.setString(5, txtCodigo.getText());
             int aviso = ps.executeUpdate();
             if (aviso > 0) {
                 JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
                 ps.close();
                 limpiarCajas();
                 CargarTabla();
+            }else{
+                JOptionPane.showMessageDialog(null, "No existe el codigo de usuario");
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
@@ -384,8 +364,6 @@ public class Trabajadores extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
