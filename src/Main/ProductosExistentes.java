@@ -5,13 +5,23 @@
  */
 package Main;
 
+import java.awt.event.KeyEvent;
+import java.sql.PreparedStatement;
+import Conexion.Conexion;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Alexander
  */
 public class ProductosExistentes extends javax.swing.JFrame {
 
-    
+    Conexion conexion = new Conexion();
+    Connection con = conexion.getConnection();
+
     public ProductosExistentes() {
         initComponents();
         this.setTitle("Agregar Productos Existentes");
@@ -65,6 +75,12 @@ public class ProductosExistentes extends javax.swing.JFrame {
 
         jLabel1.setText("Productos escaneados:");
 
+        txtProductosEscaneados.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtProductosEscaneadosKeyPressed(evt);
+            }
+        });
+
         jButton1.setText("Agregar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,17 +93,19 @@ public class ProductosExistentes extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(20, 20, 20)
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtProductosEscaneados))))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtProductosEscaneados)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton1)))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -121,6 +139,23 @@ public class ProductosExistentes extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtProductosEscaneadosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProductosEscaneadosKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+                PreparedStatement ps = con.prepareStatement("update productos set cantidad=cantidad+1 where codigo=?");
+                ps.setString(1, txtProductosEscaneados.getText().trim());
+                int aviso = ps.executeUpdate();
+                if (aviso > 0){
+                    txtProductosEscaneados.setText("Escaneado");
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, evt.toString());
+            }finally{
+                
+            }
+        }
+    }//GEN-LAST:event_txtProductosEscaneadosKeyPressed
 
     /**
      * @param args the command line arguments

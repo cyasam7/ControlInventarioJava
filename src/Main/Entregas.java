@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Conexion.Conexion;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
@@ -185,12 +187,15 @@ public class Entregas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        String fecha = sdf.format(date);
         if(codigo.equals("") || folio.equals("") || cantidad.equals("")){
             JOptionPane.showMessageDialog(this, "Seleccionar alguna fila en la tabla");
             return;
         }
         try {
-            recibir(folio, codigo, cantidad, "historialtrabajadores");
+            recibir(folio, codigo, cantidad,fecha, "historialtrabajadores");
             JOptionPane.showMessageDialog(this, "Se recivio el producto");
             cargarTablaTrabajadores();
         } catch (SQLException e) {
@@ -211,14 +216,17 @@ public class Entregas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        String fecha = sdf.format(date);
         if(codigoP.equals("") || folioP.equals("") || cantidadP.equals("")){
             JOptionPane.showMessageDialog(this, "Seleccionar alguna fila en la tabla");
             return;
         }
         try {
-            recibir(folioP, codigoP, cantidadP, "historialpersonas");
+            recibir(folioP, codigoP, cantidadP, fecha,"historialpersonas");
             JOptionPane.showMessageDialog(this, "Se recivio el producto");
-            cargarTablaTrabajadores();
+            cargarTablaPersonas();
             limpiarVariables();
         } catch (SQLException e) {
             System.out.println(e);
@@ -348,7 +356,7 @@ public void cargarTablaTrabajadores() {
 
     public void cargarTablaPersonas() {
         String titulos[] = {
-            "Nombre", "Apellido", "Descripcion", "Producto", "CodigoProducto", "Cantidad", "Fecha", "Entrego", "Folio"
+            "Nombre", "Apellido", "Matricula", "Producto", "CodigoProducto", "Cantidad", "Fecha", "Entrego", "Folio"
         };
         DefaultTableModel dtm = new DefaultTableModel(titulos, 0);
 
@@ -360,7 +368,7 @@ public void cargarTablaTrabajadores() {
             while (rs.next()) {
                 row[0] = rs.getString("nombre");
                 row[1] = rs.getString("apellido");
-                row[2] = rs.getString("descripcion");
+                row[2] = rs.getString("Matricula");
                 row[3] = rs.getString("producto");
                 row[4] = rs.getString("codigoproducto");
                 row[5] = rs.getString("cantidad");
@@ -375,25 +383,20 @@ public void cargarTablaTrabajadores() {
         }
     }
 
-    public void recibir(String folio,String codigo,String cantidad ,String tabla) throws SQLException {
+    public void recibir(String folio,String codigo,String cantidad,String fechaE ,String tabla) throws SQLException {
         System.out.println(cantidad);
         System.out.println(folio);
         System.out.println(codigo);
         
         con.setAutoCommit(false);
         PreparedStatement ps = con.prepareStatement("UPDATE "+tabla+" SET "
-                + "entrego=? WHERE folio=?");
+                + "entrego=?, FechaEntrego=? WHERE folio=?");
         ps.setString(1, "Se entrego");
+        ps.setString(2, fechaE);
         ps.setString(2, folio);
         ps.executeUpdate();
         ps.close();
         
-//        PreparedStatement dato = con.prepareStatement("select * from productos where codigo=?");
-//        dato.setString(1, codigo);
-//        ResultSet rs = dato.executeQuery();
-//        int pCantidad = rs.getInt("cantidad");  
-//        int nuevaCantidad =  pCantidad+Integer.parseInt(cantidad);
-//        dato.close();
         
         PreparedStatement ps2 = con.prepareStatement("UPDATE `inventario`.`productos` "
                 + "SET Cantidad=Cantidad+?  "

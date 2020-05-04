@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cca446f2-eb35-472f-9768-e6836a61264c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="PieChartDataset" uuid="eed5d0ec-c86b-4120-af6e-67888898424f"/>
+	<parameter name="inicio" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="final" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     vhistorialtrabajador.`Nombre` AS vhistorialtrabajador_Nombre,
+     vhistorialtrabajador.`Apellido` AS vhistorialtrabajador_Apellido,
+     vhistorialtrabajador.`Area` AS vhistorialtrabajador_Area,
+     vhistorialtrabajador.`Turno` AS vhistorialtrabajador_Turno,
+     vhistorialtrabajador.`Fecha` AS vhistorialtrabajador_Fecha,
+     vhistorialtrabajador.`Entrego` AS vhistorialtrabajador_Entrego,
+     vhistorialtrabajador.`Folio` AS vhistorialtrabajador_Folio,
+     vhistorialtrabajador.`Producto` AS vhistorialtrabajador_Producto,
+     vhistorialtrabajador.`Cantidad` AS vhistorialtrabajador_Cantidad,
+     vhistorialtrabajador.`Codigo` AS vhistorialtrabajador_Codigo
+FROM
+     `vhistorialtrabajador` vhistorialtrabajador
+where vhistorialtrabajador.`Fecha` between $P{inicio} and $P{final}]]>
+	</queryString>
+	<field name="vhistorialtrabajador_Nombre" class="java.lang.String"/>
+	<field name="vhistorialtrabajador_Apellido" class="java.lang.String"/>
+	<field name="vhistorialtrabajador_Area" class="java.lang.String"/>
+	<field name="vhistorialtrabajador_Turno" class="java.lang.String"/>
+	<field name="vhistorialtrabajador_Fecha" class="java.sql.Timestamp"/>
+	<field name="vhistorialtrabajador_Entrego" class="java.lang.String"/>
+	<field name="vhistorialtrabajador_Folio" class="java.lang.String"/>
+	<field name="vhistorialtrabajador_Producto" class="java.lang.String"/>
+	<field name="vhistorialtrabajador_Cantidad" class="java.lang.Integer"/>
+	<field name="vhistorialtrabajador_Codigo" class="java.lang.String"/>
+	<variable name="Fecha _1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{Fecha }]]></variableExpression>
+	</variable>
+	<title>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement style="SubTitle" x="336" y="65" width="449" height="29" uuid="2a37bdc1-3a59-451e-9f8a-27f2240d2843"/>
+				<textElement textAlignment="Right">
+					<font size="22" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Reporte]]></text>
+			</staticText>
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="0" width="822" height="65" forecolor="#006699" backcolor="#006699" uuid="d2fb4757-f4f6-4fd1-bf07-d9284adba05d"/>
+				<staticText>
+					<reportElement style="Title" x="24" y="0" width="786" height="65" uuid="9f18b6b7-7562-4b86-a75e-3a81641e2678"/>
+					<textElement textAlignment="Right">
+						<font size="34" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Facultad de psicologia y Terapia de la comunicacion]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="0" y="0" width="57" height="14" forecolor="#000000" uuid="a663a525-bf6f-4128-a5dc-cf706f29b5f4"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="114" y="0" width="126" height="14" forecolor="#000000" uuid="af744c76-f22c-46d2-835b-527e0f4f306e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Area de Trabajador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="240" y="0" width="57" height="14" forecolor="#000000" uuid="072d8df3-51ff-426b-997c-a50733354e1d"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Turno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="297" y="0" width="57" height="14" forecolor="#000000" uuid="ae59e032-48fa-46d7-8018-99775beb81f3"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="402" y="0" width="80" height="14" forecolor="#000000" uuid="9dc93c9f-207a-4c87-a2d7-92a78de6925b"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[¿Se entrego?]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="505" y="0" width="80" height="14" forecolor="#000000" uuid="11901601-7002-4cc4-8d6d-58adb847b4d9"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Folio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="626" y="0" width="57" height="14" forecolor="#000000" uuid="729408c8-f9af-4488-b2cb-d59464496977"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="683" y="0" width="57" height="14" forecolor="#000000" uuid="b5a549a2-b421-4b96-811b-3501e90e4ac8"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="738" y="0" width="57" height="14" forecolor="#000000" uuid="2e88d2ea-cf6e-4949-83f6-352e5a75ea16"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="227" y="14" width="575" height="1" uuid="d5af744c-7acb-48b5-94cb-52a05dfee40b"/>
+			</line>
+			<frame>
+				<reportElement x="227" y="0" width="575" height="14" uuid="ca3b6fff-910b-42ce-b20e-1443c3ffb259"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="13" y="0" width="57" height="14" uuid="4c704bcf-f4f7-4e85-b1e1-3e369e86b4b9"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Turno}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="175" y="0" width="80" height="14" uuid="95d9b239-7665-48a0-ac48-0701fd40ee80"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Entrego}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="278" y="0" width="121" height="14" uuid="7b3564bd-136d-44c3-aad8-94326cddb187"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Folio}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="399" y="0" width="57" height="14" uuid="17ab3066-75ac-41fe-ace1-cf8ab3a8b0f4"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Producto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="456" y="0" width="57" height="14" uuid="dca4856e-2dd0-4c2b-8db7-4a62a92a3f2d"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Cantidad}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="513" y="0" width="57" height="14" uuid="bbcf3d70-a6c1-4e44-b4ca-6df4820aa376"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Codigo}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="70" y="0" width="101" height="14" uuid="25dc2b4a-4d2d-431c-8dcb-35613fc0045f"/>
+					<textElement>
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Fecha}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="0" y="0" width="57" height="14" uuid="4c294f31-1248-4163-b195-f31e7126cef7"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Nombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="57" y="0" width="57" height="14" uuid="63847ced-76ed-4da7-91c5-069aed56dfdc"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Apellido}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="114" y="1" width="113" height="14" uuid="8659af52-d28a-47bd-8652-3b8cc38fee9e"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vhistorialtrabajador_Area}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="dc50f2e7-65a9-458f-953a-b90383bd54b7"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="800" height="16" forecolor="#D0B48E" backcolor="#006699" uuid="28df8a49-5aa5-4705-9a32-2fb8c669148e"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="753" y="0" width="40" height="16" forecolor="#FFFFFF" uuid="7befe084-6963-45c8-b76e-8c69cac43b61"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="673" y="0" width="80" height="16" forecolor="#FFFFFF" uuid="232bca07-d738-41e1-b7d4-3079c1aa7cc9"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="2" y="0" width="197" height="16" forecolor="#FFFFFF" uuid="c0fb28af-cc4a-433a-b947-229292cbc02d"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -5,6 +5,7 @@
  */
 package Main;
 import Conexion.Conexion;
+import Reportes.GenerarReporte;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-/**
+/*
  *
  * @author Alexander
  */
@@ -79,6 +80,11 @@ public class Historial extends javax.swing.JFrame {
         jLabel2.setText("Fecha Final:");
 
         jButton1.setText("Generar Reporte");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -179,7 +185,7 @@ public class Historial extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1033, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,6 +194,12 @@ public class Historial extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        GenerarReporte generarReporte = new GenerarReporte();
+        
+        generarReporte.generarPDF(dateInicial.getDate(), dateFinal.getDate());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -273,7 +285,7 @@ public void cargarTablaTrabajador(){
 }
 public void cargarTablaPersona(){
     String titulos[] = {
-      "Nombre","Apellido","Descripcion","Producto","Codigo","Cantidad","Folio","Entrego","Fecha"
+      "Nombre","Apellido","Matricula","Producto","Codigo","Cantidad","Folio","Entrego","Fecha"
     };
     DefaultTableModel dtm = new DefaultTableModel(titulos,0);
     
@@ -284,7 +296,7 @@ public void cargarTablaPersona(){
         while(rs.next()){
             row[0]=rs.getString("nombre");
             row[1]=rs.getString("apellido");
-            row[2]=rs.getString("descripcion");
+            row[2]=rs.getString("matricula");
             row[3]=rs.getString("producto");
             row[4]=rs.getString("CodigoProducto");
             row[5]=rs.getString("cantidad");

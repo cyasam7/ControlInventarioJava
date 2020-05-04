@@ -6,6 +6,8 @@
 package Main;
 
 import Conexion.Conexion;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +26,6 @@ public class Productos extends javax.swing.JFrame {
         this.setTitle("Productos");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-//        CargarTabla();
         cargarCombo();
     }
 
@@ -74,6 +75,12 @@ public class Productos extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Codigo:");
+
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -228,9 +235,18 @@ public class Productos extends javax.swing.JFrame {
                 this.dispose();
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
+            System.out.println(e);
+            if (e.getMessage().contains("foreign key")) {
+                JOptionPane.showMessageDialog(this, "Coloca el area");
+            }else if(e.getMessage().contains("Incorrect integer value")){
+                JOptionPane.showMessageDialog(this, "Coloca numero en el lugar correspondiente");
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
+
+    }//GEN-LAST:event_txtCodigoKeyPressed
 
     /**
      * @param args the command line arguments
@@ -291,29 +307,7 @@ public void limpiarCajas(){
     txtEstado.setText("");
     txtCodigo.setText("");
 }
-//public void CargarTabla(){
-//    String titulos[] ={
-//        "Nombre","Cantidad","Estado","Codigo","Area"
-//    };
-//    DefaultTableModel dtm = new DefaultTableModel(titulos,0);
-//    try {
-//        PreparedStatement ps = con.prepareStatement("select * from productos");
-//        ResultSet rs = ps.executeQuery();
-//        Object row[] = new Object[5];
-//        while(rs.next()){
-//            row[0]=rs.getString("nombre");
-//            row[1]=rs.getString("cantidad");
-//            row[2]=rs.getString("estado");
-//            row[3]=rs.getString("codigo");
-//            row[4]=rs.getString("area");
-//            dtm.addRow(row);
-//        }
-//        tablaProductos.setModel(dtm);
-//        ps.close();
-//    } catch (SQLException e) {
-//        JOptionPane.showMessageDialog(null, e.toString());
-//    }
-//}
+
 public void cargarCombo(){
     DefaultComboBoxModel cbxM=new DefaultComboBoxModel();
     cbxM.addElement("-Selecciona-");
