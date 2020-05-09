@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1:3308
--- Tiempo de generación: 02-05-2020 a las 20:40:39
--- Versión del servidor: 8.0.18
--- Versión de PHP: 7.3.12
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 09-05-2020 a las 04:43:46
+-- Versión del servidor: 10.4.11-MariaDB
+-- Versión de PHP: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -21,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `inventario`
 --
+CREATE DATABASE IF NOT EXISTS `inventario` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `inventario`;
 
 -- --------------------------------------------------------
 
@@ -28,18 +29,18 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `domareas`
 --
 
-DROP TABLE IF EXISTS `domareas`;
 CREATE TABLE IF NOT EXISTS `domareas` (
   `Area` varchar(45) NOT NULL,
   PRIMARY KEY (`Area`),
   UNIQUE KEY `Area_UNIQUE` (`Area`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `domareas`
 --
 
 INSERT INTO `domareas` (`Area`) VALUES
+('Limpieza'),
 ('Liquida');
 
 -- --------------------------------------------------------
@@ -48,19 +49,18 @@ INSERT INTO `domareas` (`Area`) VALUES
 -- Estructura de tabla para la tabla `domareatrabajadores`
 --
 
-DROP TABLE IF EXISTS `domareatrabajadores`;
 CREATE TABLE IF NOT EXISTS `domareatrabajadores` (
   `Area` varchar(45) NOT NULL,
   PRIMARY KEY (`Area`),
   UNIQUE KEY `area_UNIQUE` (`Area`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `domareatrabajadores`
 --
 
 INSERT INTO `domareatrabajadores` (`Area`) VALUES
-('Alexander piso1');
+('C piso 1');
 
 -- --------------------------------------------------------
 
@@ -68,11 +68,10 @@ INSERT INTO `domareatrabajadores` (`Area`) VALUES
 -- Estructura de tabla para la tabla `domturno`
 --
 
-DROP TABLE IF EXISTS `domturno`;
 CREATE TABLE IF NOT EXISTS `domturno` (
   `Turno` varchar(45) NOT NULL,
   PRIMARY KEY (`Turno`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `domturno`
@@ -88,20 +87,27 @@ INSERT INTO `domturno` (`Turno`) VALUES
 -- Estructura de tabla para la tabla `historialpersonas`
 --
 
-DROP TABLE IF EXISTS `historialpersonas`;
 CREATE TABLE IF NOT EXISTS `historialpersonas` (
-  `idHistorialPersona` int(11) NOT NULL,
+  `idHistorialPersona` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(45) NOT NULL,
   `Apellido` varchar(45) NOT NULL,
-  `Descripcion` text NOT NULL,
+  `Matricula` varchar(45) NOT NULL,
   `CodigoProducto` varchar(45) NOT NULL,
-  `CantidadProducto` int(11) NOT NULL,
-  `Fecha` timestamp NOT NULL,
   `Entrego` varchar(45) NOT NULL DEFAULT 'No entrego',
   `Folio` varchar(45) NOT NULL,
+  `CantidadProducto` int(11) NOT NULL,
+  `Fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `FechaEntrego` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`idHistorialPersona`),
   KEY `HistorialPProducto_idx` (`CodigoProducto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `historialpersonas`
+--
+
+INSERT INTO `historialpersonas` (`idHistorialPersona`, `Nombre`, `Apellido`, `Matricula`, `CodigoProducto`, `Entrego`, `Folio`, `CantidadProducto`, `Fecha`, `FechaEntrego`) VALUES
+(3, 'Alexander', 'Serrano', '17041611', '201512210846', '', 'sdasdsad', 1, '2016-11-16 12:43:20', NULL);
 
 -- --------------------------------------------------------
 
@@ -109,19 +115,28 @@ CREATE TABLE IF NOT EXISTS `historialpersonas` (
 -- Estructura de tabla para la tabla `historialtrabajadores`
 --
 
-DROP TABLE IF EXISTS `historialtrabajadores`;
 CREATE TABLE IF NOT EXISTS `historialtrabajadores` (
   `idHistorial` int(11) NOT NULL AUTO_INCREMENT,
-  `CodigoProducto` varchar(45) DEFAULT NULL,
+  `CodigoProducto` varchar(45) NOT NULL,
   `CodigoTrabajador` varchar(45) NOT NULL,
-  `Fecha` timestamp NOT NULL,
+  `FechaEntrego` timestamp NULL DEFAULT NULL,
   `Entrego` varchar(45) NOT NULL DEFAULT 'No entrego',
   `Folio` varchar(45) NOT NULL,
   `CantidadProducto` int(11) NOT NULL,
+  `Fecha` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`idHistorial`),
   KEY `HistorialTProducto_idx` (`CodigoProducto`),
   KEY `HistorialTTrabajador_idx` (`CodigoTrabajador`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `historialtrabajadores`
+--
+
+INSERT INTO `historialtrabajadores` (`idHistorial`, `CodigoProducto`, `CodigoTrabajador`, `FechaEntrego`, `Entrego`, `Folio`, `CantidadProducto`, `Fecha`) VALUES
+(28, '7100', '15040432', NULL, 'No entrego', '022a5465-0c67-4e10-b68e-daf8f78a1277', 1, '2020-05-09 02:22:07'),
+(29, '17000', '15040432', NULL, 'No entrego', '022a5465-0c67-4e10-b68e-daf8f78a1277', 1, '2020-05-09 02:22:07'),
+(30, '10150', '15040432', NULL, 'No entrego', '022a5465-0c67-4e10-b68e-daf8f78a1277', 1, '2020-05-09 02:22:07');
 
 -- --------------------------------------------------------
 
@@ -129,7 +144,6 @@ CREATE TABLE IF NOT EXISTS `historialtrabajadores` (
 -- Estructura de tabla para la tabla `productos`
 --
 
-DROP TABLE IF EXISTS `productos`;
 CREATE TABLE IF NOT EXISTS `productos` (
   `idProducto` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(45) NOT NULL,
@@ -140,14 +154,32 @@ CREATE TABLE IF NOT EXISTS `productos` (
   PRIMARY KEY (`idProducto`),
   UNIQUE KEY `Codigo_UNIQUE` (`Codigo`),
   KEY `domAreaProducto_idx` (`Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
 INSERT INTO `productos` (`idProducto`, `Nombre`, `Cantidad`, `Estado`, `Codigo`, `Area`) VALUES
-(8, 'Jobon', 4, 'Bien', '17000', 'Liquida');
+(8, 'Jobon', 3, 'Bien', '17000', 'Liquida'),
+(12, 'Jabon', 93, 'Bueno', '7100', 'Limpieza'),
+(13, 'Jabon', 9, 'Bueno', '10150', 'Limpieza'),
+(14, 'Caja', 3, 'Bueno', '201512210846', 'Limpieza');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tempoproductos`
+--
+
+CREATE TABLE IF NOT EXISTS `tempoproductos` (
+  `idTempo` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(50) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `area` varchar(50) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`idTempo`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -155,7 +187,6 @@ INSERT INTO `productos` (`idProducto`, `Nombre`, `Cantidad`, `Estado`, `Codigo`,
 -- Estructura de tabla para la tabla `trabajadores`
 --
 
-DROP TABLE IF EXISTS `trabajadores`;
 CREATE TABLE IF NOT EXISTS `trabajadores` (
   `idTrabajador` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(45) NOT NULL,
@@ -169,7 +200,15 @@ CREATE TABLE IF NOT EXISTS `trabajadores` (
   KEY `DomAreaTrabajo_idx` (`Area`),
   KEY `DomAreaTrabajador_idx` (`Area`),
   KEY `AreaParaTrabajador_idx` (`Area`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `trabajadores`
+--
+
+INSERT INTO `trabajadores` (`idTrabajador`, `Nombre`, `Apellido`, `Area`, `Turno`, `Codigo`) VALUES
+(9, 'Alexander', 'Serrano', 'C piso 1', 'Matutino', '17041611'),
+(10, 'Francisco', 'Freyre', 'C piso 1', 'Vespertino', '15040432');
 
 -- --------------------------------------------------------
 
@@ -177,7 +216,6 @@ CREATE TABLE IF NOT EXISTS `trabajadores` (
 -- Estructura de tabla para la tabla `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
   `NombreCompleto` varchar(45) NOT NULL,
@@ -185,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `Password` varchar(45) NOT NULL,
   `TipoUsuario` varchar(45) NOT NULL,
   PRIMARY KEY (`idUsuario`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -193,17 +231,17 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 -- Estructura Stand-in para la vista `vhistorialpersonas`
 -- (Véase abajo para la vista actual)
 --
-DROP VIEW IF EXISTS `vhistorialpersonas`;
 CREATE TABLE IF NOT EXISTS `vhistorialpersonas` (
-`Apellido` varchar(45)
-,`Cantidad` int(11)
-,`CodigoProducto` varchar(45)
-,`Descripcion` text
-,`entrego` varchar(45)
-,`fecha` timestamp
-,`folio` varchar(45)
-,`Nombre` varchar(45)
+`Nombre` varchar(45)
+,`Apellido` varchar(45)
+,`Matricula` varchar(45)
 ,`Producto` varchar(45)
+,`CodigoProducto` varchar(45)
+,`Cantidad` int(11)
+,`fecha` timestamp
+,`FechaEntrego` timestamp
+,`entrego` varchar(45)
+,`folio` varchar(45)
 );
 
 -- --------------------------------------------------------
@@ -212,37 +250,58 @@ CREATE TABLE IF NOT EXISTS `vhistorialpersonas` (
 -- Estructura Stand-in para la vista `vhistorialtrabajador`
 -- (Véase abajo para la vista actual)
 --
-DROP VIEW IF EXISTS `vhistorialtrabajador`;
 CREATE TABLE IF NOT EXISTS `vhistorialtrabajador` (
-`Apellido` varchar(45)
+`Nombre` varchar(45)
+,`Apellido` varchar(45)
 ,`Area` varchar(45)
+,`Turno` varchar(45)
+,`Fecha` timestamp
+,`Entrego` varchar(45)
+,`Folio` varchar(45)
+,`FechaEntrego` timestamp
+,`Producto` varchar(45)
 ,`Cantidad` int(11)
 ,`Codigo` varchar(45)
-,`Entrego` varchar(45)
-,`Fecha` timestamp
-,`Folio` varchar(45)
-,`Nombre` varchar(45)
-,`Producto` varchar(45)
-,`Turno` varchar(45)
 );
 
 -- --------------------------------------------------------
 
 --
--- Estructura para la vista `vhistorialpersonas`
+-- Estructura para la vista de `vhistorialpersonas` exportada como una tabla
 --
 DROP TABLE IF EXISTS `vhistorialpersonas`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vhistorialpersonas`  AS  select `hp`.`Nombre` AS `Nombre`,`hp`.`Apellido` AS `Apellido`,`hp`.`Descripcion` AS `Descripcion`,`p`.`Nombre` AS `Producto`,`p`.`Codigo` AS `CodigoProducto`,`hp`.`CantidadProducto` AS `Cantidad`,`hp`.`Fecha` AS `fecha`,`hp`.`Entrego` AS `entrego`,`hp`.`Folio` AS `folio` from (`historialpersonas` `hp` join `productos` `p`) where (`hp`.`CodigoProducto` = `p`.`Codigo`) ;
+CREATE TABLE IF NOT EXISTS `vhistorialpersonas`(
+    `Nombre` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Apellido` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Matricula` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Producto` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `CodigoProducto` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Cantidad` int(11) NOT NULL,
+    `fecha` timestamp NOT NULL DEFAULT 'current_timestamp()',
+    `FechaEntrego` timestamp DEFAULT NULL,
+    `entrego` varchar(45) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'No entrego',
+    `folio` varchar(45) COLLATE utf8mb4_general_ci NOT NULL
+);
 
 -- --------------------------------------------------------
 
 --
--- Estructura para la vista `vhistorialtrabajador`
+-- Estructura para la vista de `vhistorialtrabajador` exportada como una tabla
 --
 DROP TABLE IF EXISTS `vhistorialtrabajador`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vhistorialtrabajador`  AS  select `tb`.`Nombre` AS `Nombre`,`tb`.`Apellido` AS `Apellido`,`tb`.`Area` AS `Area`,`tb`.`Turno` AS `Turno`,`t`.`Fecha` AS `Fecha`,`t`.`Entrego` AS `Entrego`,`t`.`Folio` AS `Folio`,`p`.`Nombre` AS `Producto`,`t`.`CantidadProducto` AS `Cantidad`,`p`.`Codigo` AS `Codigo` from ((`historialtrabajadores` `t` join `trabajadores` `tb`) join `productos` `p`) where ((`t`.`CodigoTrabajador` = `tb`.`Codigo`) and (`t`.`CodigoProducto` = `p`.`Codigo`)) ;
+CREATE TABLE IF NOT EXISTS `vhistorialtrabajador`(
+    `Nombre` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Apellido` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Area` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `Turno` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Fecha` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+    `Entrego` varchar(45) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'No entrego',
+    `Folio` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `FechaEntrego` timestamp DEFAULT NULL,
+    `Producto` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `Cantidad` int(11) NOT NULL,
+    `Codigo` varchar(45) COLLATE utf8mb4_general_ci NOT NULL
+);
 
 --
 -- Restricciones para tablas volcadas
@@ -252,14 +311,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Filtros para la tabla `historialpersonas`
 --
 ALTER TABLE `historialpersonas`
-  ADD CONSTRAINT `HistorialPProducto` FOREIGN KEY (`CodigoProducto`) REFERENCES `productos` (`Codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `historialtrabajadores`
---
-ALTER TABLE `historialtrabajadores`
-  ADD CONSTRAINT `HistorialTProducto` FOREIGN KEY (`CodigoProducto`) REFERENCES `productos` (`Codigo`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `HistorialTTrabajador` FOREIGN KEY (`CodigoTrabajador`) REFERENCES `trabajadores` (`Codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `HistorialPProducto` FOREIGN KEY (`CodigoProducto`) REFERENCES `productos` (`Codigo`);
 
 --
 -- Filtros para la tabla `productos`
@@ -273,6 +325,74 @@ ALTER TABLE `productos`
 ALTER TABLE `trabajadores`
   ADD CONSTRAINT `domTrabjadorArea` FOREIGN KEY (`Area`) REFERENCES `domareatrabajadores` (`Area`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `domTurno` FOREIGN KEY (`Turno`) REFERENCES `domturno` (`Turno`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
+-- Metadatos
+--
+USE `phpmyadmin`;
+
+--
+-- Metadatos para la tabla domareas
+--
+
+--
+-- Metadatos para la tabla domareatrabajadores
+--
+
+--
+-- Metadatos para la tabla domturno
+--
+
+--
+-- Metadatos para la tabla historialpersonas
+--
+
+--
+-- Metadatos para la tabla historialtrabajadores
+--
+
+--
+-- Metadatos para la tabla productos
+--
+
+--
+-- Volcado de datos para la tabla `pma__table_uiprefs`
+--
+
+INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
+('root', 'inventario', 'productos', '{\"sorted_col\":\"`Nombre` ASC\"}', '2020-05-08 22:32:01');
+
+--
+-- Metadatos para la tabla tempoproductos
+--
+
+--
+-- Volcado de datos para la tabla `pma__table_uiprefs`
+--
+
+INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
+('root', 'inventario', 'tempoproductos', '{\"CREATE_TIME\":\"2020-05-07 16:41:59\",\"col_order\":[0,1,2,3,4],\"col_visib\":[1,1,1,1,1]}', '2020-05-08 22:16:40');
+
+--
+-- Metadatos para la tabla trabajadores
+--
+
+--
+-- Metadatos para la tabla usuarios
+--
+
+--
+-- Metadatos para la tabla vhistorialpersonas
+--
+
+--
+-- Metadatos para la tabla vhistorialtrabajador
+--
+
+--
+-- Metadatos para la base de datos inventario
+--
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

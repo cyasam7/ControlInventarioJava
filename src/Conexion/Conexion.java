@@ -23,7 +23,7 @@ public class Conexion {
     public Conexion() {
         try {
             //Driver
-            String URI = "jdbc:mysql://localhost:3308/inventario?autoReconnect=true&useSSL=false";
+            String URI = "jdbc:mysql://localhost:3306/inventario?autoReconnect=true&useSSL=false";
             Class.forName("java.sql.DriverManager");
             con = (Connection) DriverManager.getConnection(URI, "root", "");
             System.out.println("Conexion realizada");

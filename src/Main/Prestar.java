@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Main;
 
 import Conexion.Conexion;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +12,7 @@ import java.util.UUID;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -33,8 +30,8 @@ public class Prestar extends javax.swing.JFrame {
         this.setTitle("Prestamos");
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        cargarCombo(cbxAreaT, "domareas", "area");
         cargarCombo(cbxAreaP, "domareas", "area");
+        llenarTabla();
     }
 
     /**
@@ -48,17 +45,13 @@ public class Prestar extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        cbxAreaT = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        cbxProductoT = new javax.swing.JComboBox<>();
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        txtCodigoTrabajadorT = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
-        txtCodigoT = new javax.swing.JTextField();
-        txtCantidadTrabajador = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
+        txtCodigoProducto = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Tabla1 = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
+        txtCodigoTrabajadorT1 = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
@@ -81,28 +74,6 @@ public class Prestar extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(51, 135, 158));
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Area:");
-
-        cbxAreaT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbxAreaT.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbxAreaTItemStateChanged(evt);
-            }
-        });
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Producto:");
-
-        cbxProductoT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-Selecciona-" }));
-        cbxProductoT.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbxProductoTItemStateChanged(evt);
-            }
-        });
-
         jButton2.setText("Prestar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,15 +85,34 @@ public class Prestar extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Codigo Trabajador:");
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Codigo Producto:");
+        txtCodigoProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCodigoProductoKeyReleased(evt);
+            }
+        });
 
-        txtCodigoT.setEditable(false);
+        Tabla1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(Tabla1);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setText("Cantidad:");
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Codigo Producto:");
+
+        txtCodigoTrabajadorT1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCodigoTrabajadorT1KeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,23 +122,16 @@ public class Prestar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 308, Short.MAX_VALUE)
-                        .addComponent(jButton2))
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCodigoProducto))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCantidadTrabajador)
-                            .addComponent(txtCodigoT)
-                            .addComponent(cbxProductoT, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCodigoTrabajadorT)
-                            .addComponent(cbxAreaT, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCodigoTrabajadorT1)))
+                .addGap(24, 24, 24))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,26 +139,16 @@ public class Prestar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtCodigoTrabajadorT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCodigoTrabajadorT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(cbxAreaT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(cbxProductoT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(txtCodigoT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(txtCantidadTrabajador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                    .addComponent(txtCodigoProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Trabajador", jPanel1);
@@ -258,7 +231,7 @@ public class Prestar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtApellido, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                             .addComponent(cbxAreaP, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbxProductoP, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtNombre)))
@@ -317,7 +290,7 @@ public class Prestar extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,15 +301,14 @@ public class Prestar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String codigoProducto = txtCodigoT.getText();
-        String codigoTrabajador = txtCodigoTrabajadorT.getText();
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String fecha = sdf.format(date);
         String folio = String.valueOf(UUID.randomUUID());
-        String cantidad = txtCantidadTrabajador.getText();
         try {
-            iniciarTransaccion(codigoProducto, codigoTrabajador, fecha, folio, cantidad);
+            iniciarTransaccion(txtCodigoTrabajadorT1.getText(), fecha, folio);
+            llenarTabla();
         } catch (SQLException e) {
             if (e.getMessage().contains("a foreign key constraint fails")) {
                 JOptionPane.showMessageDialog(this, "No existe el trabajador");
@@ -361,23 +333,6 @@ public class Prestar extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void cbxProductoTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProductoTItemStateChanged
-        try {
-            PreparedStatement ps = con.prepareStatement("select * from productos where nombre=?");
-            ps.setString(1, cbxProductoT.getSelectedItem().toString());
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                txtCodigoT.setText(rs.getString("codigo"));
-                cantidadProductoTrabajador = rs.getInt("cantidad");
-            }
-        } catch (SQLException e) {
-        }
-    }//GEN-LAST:event_cbxProductoTItemStateChanged
-
-    private void cbxAreaTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxAreaTItemStateChanged
-        cargarComboAnidado(cbxProductoT, "productos", "Nombre", cbxAreaT.getSelectedItem().toString());
-    }//GEN-LAST:event_cbxAreaTItemStateChanged
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String nombre = txtNombre.getText();
         String apellido = txtApellido.getText();
@@ -391,6 +346,7 @@ public class Prestar extends javax.swing.JFrame {
         
         try {
             iniciarTransaccionPersona(nombre, apellido, descripcion, codigoProducto, cantidad, fecha, folio);
+            
         } catch (SQLException e) {
             try {
                 System.out.println(e.getMessage());
@@ -429,6 +385,17 @@ public class Prestar extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxProductoPItemStateChanged
 
+    private void txtCodigoProductoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoProductoKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            insertarTempoProductos(txtCodigoProducto.getText());
+            llenarTabla();
+        }
+    }//GEN-LAST:event_txtCodigoProductoKeyReleased
+
+    private void txtCodigoTrabajadorT1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTrabajadorT1KeyReleased
+
+    }//GEN-LAST:event_txtCodigoTrabajadorT1KeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -465,16 +432,12 @@ public class Prestar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Tabla1;
     private javax.swing.JComboBox<String> cbxAreaP;
-    private javax.swing.JComboBox<String> cbxAreaT;
     private javax.swing.JComboBox<String> cbxProductoP;
-    private javax.swing.JComboBox<String> cbxProductoT;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -486,42 +449,55 @@ public class Prestar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCantidadPersonas;
-    private javax.swing.JTextField txtCantidadTrabajador;
     private javax.swing.JTextField txtCodigoP;
-    private javax.swing.JTextField txtCodigoT;
-    private javax.swing.JTextField txtCodigoTrabajadorT;
+    private javax.swing.JTextField txtCodigoProducto;
+    private javax.swing.JTextField txtCodigoTrabajadorT1;
     private javax.swing.JTextArea txtDescripcion;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
-public void iniciarTransaccion(String CodigoProducto, String CodigoTrabajador, String Fecha, String Folio, String cantidad) throws SQLException {
-        if (Integer.parseInt(txtCantidadTrabajador.getText()) > cantidadProductoTrabajador) {
-            JOptionPane.showMessageDialog(this, "Exedio el limite de productos");
+    public void iniciarTransaccion(String CodigoTrabajador, String Fecha, String Folio) throws SQLException {
+        if (CodigoTrabajador.equals("")) {
+            JOptionPane.showMessageDialog(this, "Ingrese el codigo del trabajador");
             return;
         } else {
-            con.setAutoCommit(false);
-            PreparedStatement ps = con.prepareStatement("INSERT INTO `inventario`.`historialtrabajadores` "
-                    + "(`CodigoProducto`, `CodigoTrabajador`, `Fecha`, `Folio`, `CantidadProducto`) "
-                    + "VALUES (?,?,?,?,?)");
-            ps.setString(1, CodigoProducto);
-            ps.setString(2, CodigoTrabajador);
-            ps.setString(3, Fecha);
-            ps.setString(4, Folio);
-            ps.setString(5, cantidad);
-            ps.executeUpdate();
-            ps.close();
-
-            int c = cantidadProductoTrabajador - Integer.parseInt(txtCantidadTrabajador.getText());
-            PreparedStatement ps2 = con.prepareStatement("UPDATE `inventario`.`productos`"
-                    + " SET `Cantidad` =? WHERE (`Codigo` = ?)");
-            ps2.setInt(1, c);
-            ps2.setString(2, CodigoProducto);
-            ps2.executeUpdate();
-            ps2.close();
-            con.commit();
-            JOptionPane.showMessageDialog(this, "Prestamo exitoso");
+            PreparedStatement ps = con.prepareStatement("select * from trabajadores where codigo=?");
+            ps.setString(1, CodigoTrabajador);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                PreparedStatement ps2 = con.prepareStatement("select * from tempoproductos");
+                ResultSet rs2 = ps2.executeQuery();
+                if(Tabla1.getRowCount() > 0){
+                    while(rs2.next()){
+                        con.setAutoCommit(false);
+                        PreparedStatement ps3 = con.prepareStatement("INSERT INTO `inventario`.`historialtrabajadores` "
+                        + "(`CodigoProducto`, `CodigoTrabajador`, `Fecha`, `Folio`, `CantidadProducto`) "
+                        + "VALUES (?,?,?,?,?)");
+                        ps3.setString(1, rs2.getString("codigo"));
+                        ps3.setString(2, CodigoTrabajador);
+                        ps3.setString(3, Fecha);
+                        ps3.setString(4, Folio);
+                        ps3.setInt(5, rs2.getInt("cantidad"));
+                        ps3.execute();
+                        ps3.close();
+                        con.commit();
+                    }
+                    con.setAutoCommit(false);
+                    PreparedStatement ps4 = con.prepareStatement("delete from tempoproductos");
+                    ps4.execute();
+                    con.commit();
+                    JOptionPane.showMessageDialog(this, "Prestamo exitoso");
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "No hay productos en lista");
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "No existe el trabajador");
+            }
         }
 
     }
@@ -594,15 +570,98 @@ public void iniciarTransaccion(String CodigoProducto, String CodigoTrabajador, S
     public void limpiarCajas() {
         txtApellido.setText("");
         txtNombre.setText("");
-        txtCantidadTrabajador.setText("");
+        //txtCantidadTrabajador.setText("");
         txtCodigoP.setText("");
-        txtCodigoT.setText("");
-        txtCodigoTrabajadorT.setText("");
+        //txtCodigoT.setText("");
+        txtCodigoProducto.setText("");
         txtDescripcion.setText("");
         cbxAreaP.setSelectedIndex(0);
-        cbxAreaT.setSelectedIndex(0);
+        //cbxAreaT.setSelectedIndex(0);
         cbxProductoP.setSelectedIndex(0);
-        cbxProductoT.setSelectedIndex(0);
+        //cbxProductoT.setSelectedIndex(0);
         txtCantidadPersonas.setText("");
+    }
+    
+    public void insertarTempoProductos(String codigo){
+        try{
+            PreparedStatement ps = con.prepareStatement("select * from productos where codigo=?");
+            ps.setString(1, codigo);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                if(rs.getInt("cantidad") > 0){
+                        PreparedStatement ps2 = con.prepareStatement("select codigo, cantidad from tempoproductos where codigo=?");
+                        ps2.setString(1, rs.getString("codigo"));
+                        ResultSet rs2 = ps2.executeQuery();
+                    if(rs2.next()){
+                        con.setAutoCommit(false);
+                        PreparedStatement ps3 = con.prepareStatement("UPDATE `tempoproductos`"
+                        + " SET `Cantidad` =? WHERE (`Codigo` = ?)");
+                        ps3.setInt(1, rs2.getInt("cantidad") + 1);
+                        ps3.setString(2, rs2.getString("codigo"));
+                        ps3.executeUpdate();
+                        ps3.close();
+
+                        PreparedStatement ps4 = con.prepareStatement("UPDATE `productos`"
+                        + " SET `Cantidad` =? WHERE (`Codigo` = ?)");
+                        ps4.setInt(1, rs.getInt("cantidad") - 1);
+                        ps4.setString(2, rs.getString("codigo"));
+                        ps4.executeUpdate();
+                        ps4.close();
+                        con.commit();
+                    }
+                    else{
+                        con.setAutoCommit(false);
+                        PreparedStatement ps3 = con.prepareStatement("INSERT INTO `tempoproductos`"
+                        + "(`codigo`, `nombre`, `area`, `cantidad`) "
+                        + "VALUES (?,?,?,?)");
+                        ps3.setString(1, rs.getString("codigo"));
+                        ps3.setString(2, rs.getString("nombre"));
+                        ps3.setString(3, rs.getString("area"));
+                        ps3.setInt(4, 1);
+                        ps3.executeUpdate();
+                        ps3.close();
+
+                        PreparedStatement ps4 = con.prepareStatement("UPDATE `productos`"
+                        + " SET `Cantidad` =? WHERE (`Codigo` = ?)");
+                        ps4.setInt(1, rs.getInt("cantidad") - 1);
+                        ps4.setString(2, rs.getString("codigo"));
+                        ps4.executeUpdate();
+                        ps4.close();
+                        con.commit();
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "No hay mas productos del codigo " + rs.getString("nombre") + " en inventario");
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "El producto no existe");
+            }
+        }
+        catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }
+    
+    public void llenarTabla(){
+        String titulos[] = {
+            "Codigo","Nombre","Area","Cantidad"  
+        };
+        DefaultTableModel dtm = new DefaultTableModel(titulos,0);
+        try {
+        PreparedStatement ps = con.prepareStatement("select * from tempoproductos");
+        ResultSet rs = ps.executeQuery();
+        Object row[]= new Object[5];
+        while(rs.next()){
+            row[0]=rs.getString("codigo");
+            row[1]=rs.getString("nombre");
+            row[2]=rs.getString("area");
+            row[3]=rs.getString("cantidad");
+            dtm.addRow(row);
+        }
+        Tabla1.setModel(dtm);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e.toString());
+    }
     }
 }
